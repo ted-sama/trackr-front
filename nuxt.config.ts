@@ -18,5 +18,11 @@ export default defineNuxtConfig({
      * @default "./components/ui"
      */
     componentDir: './components/ui'
+  },
+  runtimeConfig: {
+    clientId: process.env.CLIENT_ID,
+    redirectUri: process.env.REDIRECT_URI,
+    authEndpoint: process.env.AUTH_ENDPOINT,
+    responseType: process.env.RESPONSE_TYPE,
   }
 })

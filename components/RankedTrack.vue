@@ -1,8 +1,8 @@
 <template>
   <div :class="`flex ${textPositionClasses[textPosition].container}`">
-    <div class="flex relative w-60 h-60">
-      <img :src="cover" alt="Album cover" class="w-52 h-52 rounded-lg border-solid border border-neutral-500/15">
-      <span class="text-8xl font-bold absolute bottom-0 right-0 cursor-default">{{ rank }}</span>
+    <div :class="`flex relative ${imageContainer}`">
+      <img :src="cover" alt="Album cover" :class="`${imageSize} rounded-lg border-solid border border-neutral-500/15`">
+      <span :class="`${rankSize} font-bold absolute bottom-0 right-0 cursor-default`" style="-webkit-text-stroke: 1px rgb(115 115 115 / 0.15);">{{ rank }}</span>
     </div>
     <div :class="`${textPositionClasses[textPosition].text}`">
       <h2 class="text-2xl font-bold">{{ name }}</h2>
@@ -13,6 +13,11 @@
 
 <script lang="ts" setup>
 const props = defineProps({
+  size: {
+    type: String,
+    default: 'm',
+    validator: (value: string) => ['m', 'l'].includes(value)
+  },
   rank: {
     type: Number,
     required: true
@@ -36,7 +41,30 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['updateBgColor'])
+// use computed to change size of the image based on size prop
+const imageContainer = computed(() => {
+  if (props.size === 'm') {
+    return 'w-36 h-36'
+  } else if (props.size === 'l') {
+    return 'w-60 h-60'
+  }
+})
+
+const imageSize = computed(() => {
+  if (props.size === 'm') {
+    return 'w-32 h-32'
+  } else if (props.size === 'l') {
+    return 'w-52 h-52'
+  }
+})
+
+const rankSize = computed(() => {
+  if (props.size === 'm') {
+    return 'text-6xl'
+  } else if (props.size === 'l') {
+    return 'text-8xl'
+  }
+})
 
 const textPositionClasses: any = {
   bottom: {
@@ -45,15 +73,9 @@ const textPositionClasses: any = {
   },
   right: {
     container: 'flex-row',
-    text: 'ml-4'
+    text: 'ml-4 flex flex-col justify-center'
   }
 }
-
-onMounted(() => {
-  if (props.rank === 1) {
-    emit('updateBgColor', props.cover)
-  }
-})
 </script>
 
 <style>
