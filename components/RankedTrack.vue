@@ -5,79 +5,66 @@
       <span :class="`${rankSize} font-bold absolute bottom-0 right-0 cursor-default`" style="-webkit-text-stroke: 1px rgb(115 115 115 / 0.15);">{{ rank }}</span>
     </div>
     <div :class="`${textPositionClasses[textPosition].text}`">
-      <h2 class="text-2xl font-bold">{{ name }}</h2>
-      <p class="text-lg">{{ artist }}</p>
+      <h2 class="text-sm md:text-2xl font-bold text-ellipsis overflow-hidden whitespace-nowrap">{{ name }}</h2>
+      <p class="text-sm md:text-lg text-ellipsis overflow-hidden whitespace-nowrap">{{ artist }}</p>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-const props = defineProps({
-  size: {
-    type: String,
-    default: 'm',
-    validator: (value: string) => ['m', 'l'].includes(value)
-  },
-  rank: {
-    type: Number,
-    required: true
-  },
-  cover: {
-    type: String,
-    required: true
-  },
-  name: {
-    type: String,
-    required: true
-  },
-  artist: {
-    type: String,
-    required: true
-  },
-  textPosition: {
-    type: String,
-    default: 'bottom',
-    validator: (value: string) => ['bottom', 'right'].includes(value)
-  }
+import type { Track } from '~/types/spotify';
+
+interface Props {
+  size?: 'm' | 'l';
+  textPosition?: 'bottom' | 'right';
+  rank: number;
+  cover: Track['album']['images'][0]['url'];
+  name: Track['name'];
+  artist: Track['artists'][0]['name'];
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  size: 'm',
+  textPosition: 'bottom'
 })
 
-// use computed to change size of the image based on size prop
 const imageContainer = computed(() => {
   if (props.size === 'm') {
-    return 'w-36 h-36'
+    return 'size-[90px] md:size-36'
   } else if (props.size === 'l') {
-    return 'w-60 h-60'
+    return 'size-36 md:size-60'
   }
 })
 
 const imageSize = computed(() => {
   if (props.size === 'm') {
-    return 'w-32 h-32'
+    return 'size-20 md:size-32'
   } else if (props.size === 'l') {
-    return 'w-52 h-52'
+    return 'size-32 md:size-52'
   }
 })
 
 const rankSize = computed(() => {
   if (props.size === 'm') {
-    return 'text-6xl'
+    return 'text-4xl md:text-6xl'
   } else if (props.size === 'l') {
-    return 'text-8xl'
+    return 'text-6xl md:text-8xl'
   }
 })
 
 const textPositionClasses: any = {
   bottom: {
     container: 'flex-col',
-    text: 'mt-4'
+    text: 'mt-4 max-w-60'
   },
   right: {
-    container: 'flex-row',
-    text: 'ml-4 flex flex-col justify-center'
+    container: 'flex-row gap-1 md:gap-2',
+    text: 'flex flex-col justify-center max-w-56 md:max-w-96 lg:max-w-[800px]'
   }
 }
 </script>
 
 <style>
+
 
 </style>
