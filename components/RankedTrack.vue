@@ -1,12 +1,18 @@
 <template>
   <div :class="`flex ${textPositionClasses[textPosition].container}`">
     <div :class="`flex relative ${imageContainer}`">
-      <img :src="cover" alt="Album cover" :class="`${imageSize} rounded-lg border-solid border border-neutral-500/15`">
+      <a :href="spotifyUrl" target="_blank" rel="noopener noreferrer">
+        <img :src="cover" alt="Album cover" :class="`${imageSize} rounded-[6px] border-solid border border-neutral-500/15`">
+      </a>
       <span :class="`${rankSize} font-bold absolute bottom-0 right-0 cursor-default`" style="-webkit-text-stroke: 1px rgb(115 115 115 / 0.15);">{{ rank }}</span>
     </div>
     <div :class="`${textPositionClasses[textPosition].text}`">
       <h2 class="text-sm md:text-2xl font-bold text-ellipsis overflow-hidden whitespace-nowrap">{{ name }}</h2>
-      <p class="text-sm md:text-lg text-ellipsis overflow-hidden whitespace-nowrap">{{ artist }}</p>
+        <div v-if="textPosition === 'bottom'" class="flex items-center gap-1 md:gap-2">
+          <p class="text-sm md:text-lg text-ellipsis overflow-hidden whitespace-nowrap max-w-24 md:max-w-44">{{ artists[0].name }}</p>
+          <ArtistsTooltip v-if="artists.length > 1" :artists="artists" />
+        </div>
+        <p v-else class="text-sm md:text-lg text-ellipsis overflow-hidden whitespace-nowrap">{{ allArtists }}</p>
     </div>
   </div>
 </template>
@@ -20,12 +26,17 @@ interface Props {
   rank: number;
   cover: Track['album']['images'][0]['url'];
   name: Track['name'];
-  artist: Track['artists'][0]['name'];
+  artists: Track['artists'];
+  spotifyUrl: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   size: 'm',
   textPosition: 'bottom'
+})
+
+const allArtists = computed(() => {
+  return props.artists.map((artist) => artist.name).join(", ");
 })
 
 const imageContainer = computed(() => {
@@ -65,6 +76,7 @@ const textPositionClasses: any = {
 </script>
 
 <style>
-
-
+a {
+  display: inline-block;
+}
 </style>

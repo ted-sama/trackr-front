@@ -1,5 +1,5 @@
 <template>
-  <div class="mx-auto min-h-screen max-w-screen-xl px-6 py-12 font-sans md:px-12 md:py-16 lg:py-0">
+  <div class="font-poppins mx-auto min-h-screen max-w-screen-xl px-6 py-12 md:px-12 md:py-16 lg:py-0">
     <NuxtPage></NuxtPage>
   </div>
 </template>

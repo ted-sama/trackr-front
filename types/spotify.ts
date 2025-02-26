@@ -22,7 +22,7 @@ interface Restriction {
   reason: string;
 }
 
-interface SimplifiedArtistObject {
+export interface SimplifiedArtistObject {
   external_urls: ExternalUrls;
   href: string;
   id: string;
