@@ -1,7 +1,7 @@
 <template>
-  <div class="py-24">
-    <h1 class="text-5xl font-bold">Top Tracks</h1>
-    <div class="flex gap-4 mt-8">
+  <div class="py-10 md:py-24">
+    <h1 class="flex text-3xl md:text-5xl justify-center font-bold">Top Tracks</h1>
+    <div class="flex justify-center gap-4 mt-8">
       <Button v-for ="option in timeRangeOptions" :key="option.value" @click="fetchTracks(option.value)" :disabled="option.value === timeRange" :class="{ 'bg-green-500': timeRange === option.value }">
         {{ option.label }}
       </Button>
@@ -22,7 +22,7 @@
           ></SkeletonTrack>
         </div>
       </div>
-      <div class="mt-28 space-y-5">
+      <div class="mt-12 md:mt-28 space-y-5">
         <SkeletonTrack
           v-for="index in 5"
           :key="`skeleton-mobile-${index}`"
@@ -47,7 +47,7 @@
     <!-- Actual tracks display -->
     <div v-else>
       <div
-        class="content-center hidden md:grid grid-cols-1 gap-8 mt-8 md:grid-cols-2 lg:grid-cols-3"
+        class="content-center hidden md:grid grid-cols-1 gap-8 mt-24 md:grid-cols-2 lg:grid-cols-3"
       >
         <div
           v-for="(track, index) in trackResponse?.items.slice(0, 3)"
@@ -65,7 +65,7 @@
           ></RankedTrack>
         </div>
       </div>
-      <div class="mt-28 space-y-5">
+      <div class="mt-12 md:mt-28 space-y-5">
         <RankedTrack
           v-for="(track, index) in trackResponse?.items"
           size="m"
@@ -104,9 +104,9 @@ const timeRange = ref(route.query.time_range || "short_term");
 const isLoading = ref(false);
 
 const timeRangeOptions = [
-  { value: "short_term", label: "Last 4 weeks" },
-  { value: "medium_term", label: "Last 6 months" },
-  { value: "long_term", label: "All time" },
+  { value: "short_term", label: "4 weeks" },
+  { value: "medium_term", label: "6 months" },
+  { value: "long_term", label: "1 year" },
 ];
 
 const headers = useRequestHeaders(["cookie"]);
